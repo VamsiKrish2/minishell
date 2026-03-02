@@ -1,0 +1,115 @@
+NAME:               NERAVATI VAMSI KRISHNA
+PROJECT TITLE:      MINISHELL PROJECT
+DATE OF SUBMISSION: 02/03/2026
+
+MiniShell Project Documentation
+
+1. Overview
+
+MiniShell is a simple command-line interpreter developed in C that mimics the basic functionality of a Unix/Linux shell. It allows users to execute both built-in and external commands, supports process creation, inter-process communication through pipes, and basic job control mechanisms.
+
+The main objective of this project is to understand system programming concepts such as process management, signals, and command execution using system calls.
+
+2. Features
+
+- Custom shell prompt (PS1 support)
+- Execution of built-in commands (cd, pwd, echo, jobs, fg, bg, exit)
+- Execution of external commands using "fork()" and "execvp()"
+- Pipe support ("|") for inter-process communication
+- Job control (foreground and background processes)
+- Signal handling (Ctrl+C, Ctrl+Z)
+- Process status tracking using "waitpid()"
+
+
+3. Architecture
+
+The project is modular and divided into multiple source files:
+
+- main.c
+ Entry point of the program. Initializes the shell and starts the input loop.
+
+- input.c
+ Handles user input, parsing, prompt display, and command classification.
+
+- execute.c
+  Executes built-in commands and external commands. Also manages piping between commands.
+
+- jobs.c
+  Maintains a linked list of background jobs and provides job-related operations.
+
+- minishell.h
+  Contains all structure definitions, macros, and function declarations.
+
+4. Working Principle
+
+1. The shell displays a prompt ("MiniShell$:").
+2. It reads user input using "fgets()".
+3. The input is parsed to extract the command and arguments.
+4. The command is classified as:
+   - Built-in command
+   - External command
+5. Based on type:
+   - Built-ins are handled internally
+   - External commands are executed using "fork()" and "execvp()"
+6. If pipes are present, multiple processes are created and connected using "pipe()".
+7. The parent process waits for child processes using "waitpid()".
+
+5. Built-in Commands
+
+Command| Description
+cd| Change directory
+pwd| Print current directory
+echo $$| Print process ID
+echo $?| Print last command status
+jobs| List background jobs
+fg| Bring job to foreground
+bg| Resume job in background
+exit| Exit shell
+
+Note: Other commands like "printf", "read", etc., are passed to the system as external commands.
+
+
+6. System Calls Used
+
+- "fork()" – Create a new process
+- "execvp()" – Execute a program
+- "waitpid()" – Wait for child process
+- "pipe()" – Inter-process communication
+- "dup2()" – File descriptor duplication
+- "kill()" – Send signals to processes
+- "signal()" – Handle signals
+
+
+7. Job Control
+
+Background processes are stored using a linked list.
+Each job contains:
+
+- Process ID (PID)
+- Command name
+
+Commands:
+
+- "jobs" → Displays running jobs
+- "fg" → Brings last job to foreground
+- "bg" → Resumes job in background
+
+
+8. Signal Handling
+
+- SIGINT (Ctrl+C) → Stops current process
+- SIGTSTP (Ctrl+Z) → Suspends process and adds to job list
+- SIGCHLD → Cleans up terminated child processes
+
+
+9. Limitations
+
+- Limited built-in command implementation
+- No input/output redirection (">", "<")
+- No command history
+- Basic pipeline handling
+
+
+10. Conclusion
+
+MiniShell demonstrates core operating system concepts including process management, signal handling, and command execution. It provides a simplified version of a Unix shell and serves as a strong foundation for understanding system-level programming in Linux.
